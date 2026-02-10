@@ -1,5 +1,23 @@
-__pycache__
-.ipynb_checkpoints
+# macOS
 .DS_Store
-models
-venv
+
+# python
+__pycache__/
+*.pyc
+venv/
+
+# notebooks
+.ipynb_checkpoints/
+
+# models / artifacts
+models/
+*.pt
+*.pth
+*.zip
+
+# data & logs
+data/
+runs/
+
+__MACOSX/
+.vscode/

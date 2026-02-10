@@ -4,7 +4,7 @@ MODEL:
   STRIDES: [2, 2, 2, 2]
 
 LOSS:
-  USE_LOSS: 'DiceBettiMatch'         # Avilable options 'Dice', 'BettiMatching', 'DiceBettiMatching', 'HuTopo', 'ClDice', 'ComposedHuTopo'
+  USE_LOSS: 'Dice'         # Avilable options 'Dice', 'BettiMatching', 'DiceBettiMatching', 'HuTopo', 'ClDice', 'ComposedHuTopo'
   ALPHA: 0.5
   DIMENSIONS: [0,1]
   FILTRATION: 'superlevel'          # Avilable options 'superlevel','sublevel','bothlevel'
@@ -13,7 +13,7 @@ LOSS:
 TRAIN:
   NUM_WORKERS: 16                   # Number of data loading threads
   SEED: 10                          # random seed for reproducibility
-  MAX_EPOCHS: 100
+  MAX_EPOCHS: 10
   LR: 0.001
   BATCH_SIZE: 8                     # Batch size for a single GPU
   SAVE_PATH: "./models/"            # save path for the checkpoint
