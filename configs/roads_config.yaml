@@ -4,7 +4,7 @@ MODEL:
   STRIDES: [2, 2, 2, 2]
 
 LOSS:
-  USE_LOSS: 'DiceBettiMatching'         # Avilable options 'Dice', 'BettiMatching', 'DiceBettiMatching', 'HuTopo', 'ClDice', 'ComposedHuTopo'
+  USE_LOSS: 'BettiMatching'         # Avilable options 'Dice', 'BettiMatching', 'DiceBettiMatching', 'HuTopo', 'ClDice', 'ComposedHuTopo'
   ALPHA: 0.5
   DIMENSIONS: [0,1]
   FILTRATION: 'superlevel'          # Avilable options 'superlevel','sublevel','bothlevel'
