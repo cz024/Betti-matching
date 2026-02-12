@@ -209,15 +209,23 @@ class CubicalPersistence:
             if isinstance(Picture, torch.Tensor):
                 if self.filtration == 'sublevel':
                     min = torch.min(Picture)
-                    self.PixelMap = min * torch.ones(
-                        (self.m, self.n), device=Picture.device, dtype=Picture.dtype
-                    )
+                    # Keep tensor allocations on the same device as input picture.
+                    if training:
+                        self.PixelMap = min * torch.ones(
+                            (self.m, self.n), device=Picture.device, dtype=Picture.dtype
+                        )
+                    else:
+                        self.PixelMap = min*torch.ones((self.m,self.n))
                     self.PixelMap[1:self.m-1,1:self.n-1] = Picture
                 else:
                     max = torch.max(Picture)
-                    self.PixelMap = max * torch.ones(
-                        (self.m, self.n), device=Picture.device, dtype=Picture.dtype
-                    )
+                    # Keep tensor allocations on the same device as input picture.
+                    if training:
+                        self.PixelMap = max * torch.ones(
+                            (self.m, self.n), device=Picture.device, dtype=Picture.dtype
+                        )
+                    else:
+                        self.PixelMap = max*torch.ones((self.m,self.n))
                     self.PixelMap[1:self.m-1,1:self.n-1] = Picture
             else:
                 if self.filtration == 'sublevel':
@@ -235,9 +243,10 @@ class CubicalPersistence:
             self.M = 2*self.m+1
             self.N = 2*self.n+1
         if isinstance(self.PixelMap, torch.Tensor):
-            self.ValueMap = torch.zeros(
-                (self.M, self.N), device=self.PixelMap.device, dtype=self.PixelMap.dtype
-            )
+            # self.ValueMap = torch.zeros(
+            #     (self.M, self.N), device=self.PixelMap.device, dtype=self.PixelMap.dtype
+            # )
+            self.ValueMap = torch.zeros((self.M,self.N))
         else:
             self.ValueMap = np.zeros((self.M,self.N))
         self.IndexMap = -np.ones((self.M,self.N), dtype=int)
