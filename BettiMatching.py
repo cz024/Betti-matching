@@ -8,16 +8,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from matplotlib.colors import ListedColormap
-try:
-    import panel as pn
-    from panel.interact import interact, fixed
-    from panel import widgets
-    pn.extension()
-except Exception:
-    pn = None
-    interact = None
-    fixed = None
-    widgets = None
+import panel as pn
+from panel.interact import interact, fixed
+from panel import widgets
+pn.extension()
 import gudhi.wasserstein
 
 
