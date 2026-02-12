@@ -198,7 +198,7 @@ class CubicalPersistence:
         self.get_critical_edges = get_critical_edges
         if self.get_critical_edges:
             self.critical_edges = []
-        if type(Picture) == torch.Tensor:
+        if isinstance(Picture, torch.Tensor):
             Picture = torch.squeeze(Picture)
         self.m, self.n = Picture.shape
         if relative == False:
@@ -206,20 +206,18 @@ class CubicalPersistence:
         else:
             self.m += 2
             self.n += 2
-            if type(Picture) == torch.Tensor:
+            if isinstance(Picture, torch.Tensor):
                 if self.filtration == 'sublevel':
                     min = torch.min(Picture)
-                    if training:
-                        self.PixelMap = min*torch.ones((self.m,self.n)).cuda()
-                    else:
-                        self.PixelMap = min*torch.ones((self.m,self.n))
+                    self.PixelMap = min * torch.ones(
+                        (self.m, self.n), device=Picture.device, dtype=Picture.dtype
+                    )
                     self.PixelMap[1:self.m-1,1:self.n-1] = Picture
                 else:
                     max = torch.max(Picture)
-                    if training:
-                        self.PixelMap = max*torch.ones((self.m,self.n)).cuda()
-                    else:
-                        self.PixelMap = max*torch.ones((self.m,self.n))
+                    self.PixelMap = max * torch.ones(
+                        (self.m, self.n), device=Picture.device, dtype=Picture.dtype
+                    )
                     self.PixelMap[1:self.m-1,1:self.n-1] = Picture
             else:
                 if self.filtration == 'sublevel':
@@ -236,8 +234,10 @@ class CubicalPersistence:
         else:
             self.M = 2*self.m+1
             self.N = 2*self.n+1
-        if type(self.PixelMap) == torch.Tensor:
-            self.ValueMap = torch.zeros((self.M,self.N))
+        if isinstance(self.PixelMap, torch.Tensor):
+            self.ValueMap = torch.zeros(
+                (self.M, self.N), device=self.PixelMap.device, dtype=self.PixelMap.dtype
+            )
         else:
             self.ValueMap = np.zeros((self.M,self.N))
         self.IndexMap = -np.ones((self.M,self.N), dtype=int)
@@ -252,7 +252,7 @@ class CubicalPersistence:
  
         
     def set_CubeMap(self):
-        if type(self.PixelMap) == torch.Tensor:
+        if isinstance(self.PixelMap, torch.Tensor):
             if self.filtration == 'sublevel':
                 PixelMap = np.array(self.PixelMap.cpu().detach().numpy(), dtype=float)
             else:
@@ -1184,12 +1184,12 @@ class BettiMatching:
 
         if comparison == 'union':
             if filtration == 'sublevel':
-                if type(Picture_0) == torch.Tensor:
+                if isinstance(Picture_0, torch.Tensor):
                     Picture_comp = torch.minimum(Picture_0, Picture_1)
                 else:
                     Picture_comp = np.minimum(Picture_0, Picture_1)
             else:
-                if type(Picture_0) == torch.Tensor:
+                if isinstance(Picture_0, torch.Tensor):
                     Picture_comp = torch.maximum(Picture_0, Picture_1)
                 else:
                     Picture_comp = np.maximum(Picture_0, Picture_1)
@@ -1200,12 +1200,12 @@ class BettiMatching:
             self.IP_1 = ImagePersistence(self.CP_1, self.CP_comp, valid=valid_image, use_UnionFind=use_UnionFind_for_image)
         else:
             if filtration == 'sublevel':
-                if type(Picture_0) == torch.Tensor:
+                if isinstance(Picture_0, torch.Tensor):
                     Picture_comp = torch.maximum(Picture_0, Picture_1)
                 else:
                     Picture_comp = np.maximum(Picture_0, Picture_1)
             else:
-                if type(Picture_0) == torch.Tensor:
+                if isinstance(Picture_0, torch.Tensor):
                     Picture_comp = torch.minimum(Picture_0, Picture_1)
                 else:
                     Picture_comp = np.minimum(Picture_0, Picture_1)
@@ -2328,12 +2328,12 @@ class ComposedWassersteinMatching:
 
         if comparison == 'union':
             if filtration == 'sublevel':
-                if type(likelihood) == torch.Tensor:
+                if isinstance(likelihood, torch.Tensor):
                     Picture_comp = torch.minimum(likelihood, ground_truth)
                 else:
                     Picture_comp = np.minimum(likelihood, ground_truth)
             else:
-                if type(likelihood) == torch.Tensor:
+                if isinstance(likelihood, torch.Tensor):
                     Picture_comp = torch.maximum(likelihood, ground_truth)
                 else:
                     Picture_comp = np.maximum(likelihood, ground_truth)
@@ -2342,12 +2342,12 @@ class ComposedWassersteinMatching:
             self.CP_comp = CubicalPersistence(Picture_comp, relative=relative, reduced=reduced, valid=valid, filtration=filtration, construction=construction, training=training)
         else:
             if filtration == 'sublevel':
-                if type(likelihood) == torch.Tensor:
+                if isinstance(likelihood, torch.Tensor):
                     Picture_comp = torch.maximum(likelihood, ground_truth)
                 else:
                     Picture_comp = np.maximum(likelihood, ground_truth)
             else:
-                if type(likelihood) == torch.Tensor:
+                if isinstance(likelihood, torch.Tensor):
                     Picture_comp = torch.minimum(likelihood, ground_truth)
                 else:
                     Picture_comp = np.minimum(likelihood, ground_truth)
