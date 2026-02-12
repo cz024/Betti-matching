@@ -1,4 +1,6 @@
 import numpy as np
+if not hasattr(np, "infty"):
+    np.infty = np.inf
 import torch
 import heapq
 import copy

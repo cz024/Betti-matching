@@ -14,7 +14,7 @@ import monai
 from monai.data import list_data_collate, decollate_batch
 from monai.inferers import sliding_window_inference
 from monai.metrics import DiceMetric
-from monai.transforms import Activations, AddChanneld, AsDiscrete, Compose, LoadImaged, SaveImage, ScaleIntensityd, EnsureTyped, EnsureType
+from monai.transforms import Activations, EnsureChannelFirstd, AsDiscrete, Compose, LoadImaged, SaveImage, ScaleIntensityd, EnsureTyped, EnsureType
 from monai.networks.nets import UNet
 import torchvision
 import imageio
@@ -181,7 +181,7 @@ def evaluation(model, dataconfig, metrics=[], save_path=None, relative=True, com
     val_transforms = Compose(
             [
                 LoadImaged(keys=["img", "seg"]),
-                AddChanneld(keys=["img", "seg"]),
+                EnsureChannelFirstd(keys=["img", "seg"], channel_dim="no_channel"),
                 ScaleIntensityd(keys=["img", "seg"]),
                 EnsureTyped(keys=["img", "seg"]),
             ]
